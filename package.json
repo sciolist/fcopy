@@ -1,6 +1,6 @@
 {
   "name": "fcopy",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "when theres a file in a place and a new place for the file",
   "author": "Daniel Pihlstrom <sciolist.se@gmail.com>",
   "license": "BSD-2-Clause",
