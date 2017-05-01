@@ -13,8 +13,10 @@ VERSIONS=(
 
 for v in ${VERSIONS[@]}
 do
+  set +u
   nvm install "$v"
   nvm use "$v"
+  set -u
   sleep 1
   printf "\n\n\n"
   echo "$v (modules: $(node -e 'console.log(process.versions.modules)'))"
