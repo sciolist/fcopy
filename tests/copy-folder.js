@@ -4,6 +4,7 @@ const t = require('tap');
 const fs = require('fs');
 const path = require('path');
 const PREFIX = path.basename(__filename, '.js') + '-';
+if (!fs.existsSync(__dirname + '/tmp')) fs.mkdirSync(__dirname + '/tmp');
 
 t.test('copying file succeeds', function (callback) {
     const F1 = __dirname + '/tmp/' + PREFIX + '-1'

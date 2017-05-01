@@ -9,7 +9,7 @@
     "url": "https://github.com/sciolist/fcopy.git"
   },
   "scripts": {
-    "test": "tap tests/*.js",
+    "test": "tap tests/*.js && rm -rf tests/tmp",
     "src-package": "node-pre-gyp package",
     "src-publish": "node-pre-gyp-github publish",
     "src-build": "node-pre-gyp install --build-from-source",
@@ -19,6 +19,7 @@
     "lib",
     "!lib/binding",
     "tests",
+    "!tests/tmp",
     "src",
     "binding.gyp"
   ],
