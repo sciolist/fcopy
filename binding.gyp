@@ -3,7 +3,7 @@
     {
       "include_dirs": ["<!(node -e \"require('nan')\")"],
       "cflags": ["-Wall", "-Wextra", "-pedantic"],
-      "cflags_cc": ["-std=c++14"],
+      "cflags_cc": [],
       'target_name': 'fcopy',
       'defines': [ 'V8_DEPRECATION_WARNINGS=1' ],
       "conditions": [
