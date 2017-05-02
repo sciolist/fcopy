@@ -25,7 +25,7 @@
   ],
   "binary": {
     "module_name": "fcopy",
-    "module_path": "./lib/binding/",
+    "module_path": "./lib/binding/{node_abi}-{platform}-{arch}",
     "host": "https://github.com/sciolist/fcopy/releases/download/",
     "remote_path": "v{version}"
   },
