@@ -1,5 +1,6 @@
 node_modules
-_node_modules
 /build
 /lib/binding
 /tests/tmp
+yarn.lock
+/scripts/.nvs

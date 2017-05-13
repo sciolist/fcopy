@@ -4,7 +4,7 @@
       "include_dirs": ["<!(node -e \"require('nan')\")"],
       "cflags": ["-Wall", "-Wextra", "-pedantic"],
       "cflags_cc": [],
-      'target_name': 'fcopy',
+      'target_name': '<(modname)',
       'defines': [ 'V8_DEPRECATION_WARNINGS=1' ],
       "conditions": [
         ["OS != 'win'", {
@@ -22,11 +22,11 @@
     {
       "target_name": "action_after_build",
       "type": "none",
-      "dependencies": [ "<(module_name)" ],
+      "dependencies": [ "<(modname)" ],
       "copies": [
         {
-          "files": [ "<(PRODUCT_DIR)/<(module_name).node" ],
-          "destination": "<(module_path)"
+          "files": [ "<(PRODUCT_DIR)/<(modname).node" ],
+          "destination": "lib/binding/"
         }
       ]
     }
