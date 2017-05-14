@@ -30,32 +30,11 @@ function downloadBindings(abis) {
 }
 
 function downloadBinding(abi) {
-    return new Promise(function (resolve, reject) {
-        var fileName = binding.buildModuleName(Object.assign({}, binding.versionInfo, {
-            abi: abi
-        }));
-
-        var target=binding.bindingRoot + '/' + fileName + '.node';
-        var source='https://github.com/sciolist/fcopy/releases/download/bin-v' + binding.versionInfo.binversion + '/' + fileName + '.node';
-        var request = https.get(source, processDownload);
-        
-        console.log('downloading', source);
-        function processDownload(res) {
-            if (res.statusCode === 301 || res.statusCode === 302) {
-                https.get(res.headers.location, processDownload);
-                return;
-            }
-            if (res.statusCode !== 200) {
-                reject(new Error('cannot download prebuilt ' + fileName));
-                return;
-            }
-
-            var writer = fs.createWriteStream(target);
-            writer.on('error', reject);
-            writer.on('close', resolve);
-            res.pipe(writer);
-        };
-    });
+    var fileName = binding.buildModuleName(Object.assign({}, binding.versionInfo, {
+        abi: abi
+    }));
+    console.log('downloading', fileName);
+    return binding.downloadIfNeeded(abi);
 }
 
 function rebuildBinding() {
