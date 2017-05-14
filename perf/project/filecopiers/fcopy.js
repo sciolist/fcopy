@@ -1,5 +1,4 @@
-"use strict";
-const fs = require('fs');
+'use strict';
 const fcopy = require('../../../');
 const baseCopy = require('../base-copy');
 

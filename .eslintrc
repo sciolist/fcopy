@@ -1,0 +1,7 @@
+{
+  "extends": "eslint-config-fb-strict",
+  "rules": {
+    "max-len": [2, 120],
+    "prefer-arrow-callback": 0
+  }
+}

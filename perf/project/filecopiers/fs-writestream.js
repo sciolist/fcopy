@@ -1,12 +1,4 @@
-"use strict";
-const fs = require('fs');
+'use strict';
 const baseCopy = require('../base-copy');
-
-baseCopy((src, dest, callback) => {
-    var read = fs.createReadStream(src);
-    var write = fs.createWriteStream(dest);
-    write.on('error', callback);
-    read.on('error', callback);
-    read.on('open', () => read.pipe(write))
-    write.on('close', () => callback());
-});
+const copier = require('../../../lib/copiers/fallback');
+baseCopy((src, dest, callback) => copier(src, dest, {}, callback));

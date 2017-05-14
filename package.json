@@ -36,6 +36,12 @@
     "nan": "^2.6.2"
   },
   "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-fb-strict": "^20.0.1",
+    "eslint-plugin-flowtype": "^2.33.0",
+    "eslint-plugin-jasmine": "^2.2.0",
+    "eslint-plugin-prefer-object-spread": "^1.2.1",
+    "eslint-plugin-react": "^7.0.1",
     "github": "^9.2.0",
     "node-gyp": "^3.6.1",
     "tap": "^10.3.2"
