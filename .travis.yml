@@ -20,7 +20,6 @@ env:
     - NODE_VERSION=8.0.0
     - NODE_VERSION=7.10.0
     - NODE_VERSION=6.10.3
-    - NODE_VERSION=5.12.0
 
 before_install:
   - git clone --depth 1 https://github.com/jasongin/nvs "$NVS_HOME"
