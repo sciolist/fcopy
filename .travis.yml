@@ -1,0 +1,36 @@
+language: cpp
+sudo: required
+dist: trusty
+
+branches:
+  only:
+    - master
+
+os:
+  - linux
+  - osx
+
+env:
+  global:
+    - FCOPY_REBUILD=1
+    - FCOPY_NOFALLBACK=1
+    - NVS_HOME=$HOME/.nvs
+    - secure: "uC9ixo8WHNOp6lDKaee5DBgCxrM3tDF8RpzZWCbz2V5K0oNDOOf1dymZrz401mRqTmGM8eZqgIFnXF3BEQlts0r4TiK4DRwpmHRJYflLzmS6IZ5H2OD+Pry7dBHVlCaKr1LEkmmcU9GYSRy29WxC6j7bToc+hPKgvrc51VYlQphVHwVpf+1EYYANeR7xwaeUAX3oaIcGq6Cqhl2GNXAl42FsSU5QzE5tKz4ZA5Wku+MaYzJwpHAe45z0ITH5UpKNeknOJ/+1+SeRXK0qGr9p571/je+LnMjrZZnUp73DS1CvbZa9kMPczvplS0T1xwJPvKy+db400olA4Svqeu6MdCPqkvbq1eqgKLaJN5bnlK6KpFpWpr7KNiBFR8E1hNuD3x4MFYZFNIXzWLet1AbjTmdMxjRvUGteGpZpgdbXFXK1RuUdBuyQtAxhPHF4hCZdQC1BqR+Xt6bgEMwHGxkwnUyPkFLbXd0EUhaiiQ7mxWUfwtm9wvS8awWEs2Odc53TqMDwY/901P981RfFfc5ELh+EN2/u9WgQyHXUewcxJ7kESW1ouNO9NHI5oNpR9ts+1yZpjwVFWYe8s8BHUQlW5pDEtucB9NJYD5a4ts9hHImc62Y3I4c6oNt8F2JDf2tnllzb6YcubQ8Pp7ytquopGN7M0hDFQmKdJWe3E0Zno30="
+  matrix:
+    - NODE_VERSION=8.0.0
+    - NODE_VERSION=7.10.0
+    - NODE_VERSION=6.10.3
+    - NODE_VERSION=5.12.0
+
+before_install:
+  - git clone --depth 1 https://github.com/jasongin/nvs "$NVS_HOME"
+  - . "$NVS_HOME/nvs.sh"
+  - nvs add $NODE_VERSION
+  - nvs use $NODE_VERSION
+  - export PATH=$(pwd)/node_modules/.bin:${PATH}
+
+install:
+  - npm install
+  - npm run test
+
+script: node -r babel-register ./scripts/publish-github-current.js
