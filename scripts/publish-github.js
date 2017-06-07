@@ -2,7 +2,7 @@
 //https://nodejs.org/en/download/releases/
 const cp = require('child_process');
 const path = require('path');
-const bindings = require('../lib/binding.js');
+const bindings = require('../lib/bindings.js');
 const packageJson = require('../package.json');
 const GithubApi = require('github');
 

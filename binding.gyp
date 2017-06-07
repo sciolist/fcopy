@@ -26,7 +26,7 @@
       "copies": [
         {
           "files": [ "<(PRODUCT_DIR)/<(modname).node" ],
-          "destination": "lib/binding/"
+          "destination": "lib/fcopy_binding/"
         }
       ]
     }
