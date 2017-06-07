@@ -65,18 +65,16 @@ async function run() {
     const filePath = bindings.bindingRoot + '/' + fileName;
     const foundAsset = assets.find(a => a.name === fileName);
     
-    await buildVersion(abi);
-    if (foundAsset) {
-      await github.repos.deleteAsset(Object.assign({}, repo, {
-        id: foundAsset.id,
+    if (!foundAsset) {
+      await buildVersion(abi);
+      await github.repos.uploadAsset(Object.assign({}, repo, {
+        filePath,
+        id: release.id,
+        name: fileName,
       }));
+    } else {
+      console.log('version already built.');
     }
-
-    await github.repos.uploadAsset(Object.assign({}, repo, {
-      filePath,
-      id: release.id,
-      name: fileName,
-    }));
   }
 
   console.log('\n\nrelease: ' + release.html_url);
