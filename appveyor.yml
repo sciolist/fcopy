@@ -35,4 +35,4 @@ build_script:
 
     npm run test
 
-    node ./scripts/publish-github-current.js
+    node -r babel-register ./scripts/publish-github-current.js
