@@ -10,9 +10,7 @@
   },
   "scripts": {
     "test": "FCOPY_NOFALLBACK=1 tap tests/*.js && rm -rf tests/tmp",
-    "src-package": "node-pre-gyp package",
-    "src-publish": "node-pre-gyp-github publish",
-    "src-build": "node-pre-gyp install --build-from-source",
+    "src-publish-github": "node ./scripts/publish-github.js",
     "install": "node ./scripts/install.js"
   },
   "files": [
