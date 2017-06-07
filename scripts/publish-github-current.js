@@ -2,18 +2,17 @@
 //https://nodejs.org/en/download/releases/
 const cp = require('child_process');
 const path = require('path');
+const fs = require('fs');
 const bindings = require('../lib/bindings.js');
 const packageJson = require('../package.json');
 const GithubApi = require('github');
 process.env.FCOPY_REBUILD=1;
 
-const versions = [];
-Object.keys(packageJson.binary.abis).forEach(function listversions(abi) {
-  versions.push({
-    node: packageJson.binary.abis[abi] + '/x64',
-    version: abi,
+function fsexists(path) {
+  return new Promise(function promise(resolve, reject) {
+    fs.exists(path, function fsexists(err, ret) { err ? reject(err) : resolve(ret); });
   });
-});
+}
 
 async function run() {
   let release;
@@ -58,32 +57,29 @@ async function run() {
 
   const assets = (await github.repos.getAssets(Object.assign({}, repo, {id: release.id}))).data;
 
-  for (const abi of versions) {
-    const fileName = bindings.buildModuleName(Object.assign({}, bindings.versionInfo, {
-      abi: abi.version,
-    })) + '.node';
-    const filePath = bindings.bindingRoot + '/' + fileName;
-    const foundAsset = assets.find(a => a.name === fileName);
-    
-    await buildVersion(abi);
-    if (foundAsset) {
-      await github.repos.deleteAsset(Object.assign({}, repo, {
-        id: foundAsset.id,
-      }));
-    }
-
-    await github.repos.uploadAsset(Object.assign({}, repo, {
-      filePath,
-      id: release.id,
-      name: fileName,
+  const fileName = bindings.buildModuleName(bindings.versionInfo) + '.node';
+  const filePath = bindings.bindingRoot + '/' + fileName;
+  const foundAsset = assets.find(a => a.name === fileName);
+  
+  await buildVersion();
+  if (foundAsset) {
+    await github.repos.deleteAsset(Object.assign({}, repo, {
+      id: foundAsset.id,
     }));
   }
 
+  await github.repos.uploadAsset(Object.assign({}, repo, {
+    filePath,
+    id: release.id,
+    name: fileName,
+  }));
+
   console.log('\n\nrelease: ' + release.html_url);
 
-  function buildVersion(abi) {
+  function buildVersion() {
+    if (fsexists(fileName)) return;
     return new Promise(function buildVersion(resolve, reject) {
-      const output = cp.spawnSync('bash', ['./build.sh', abi.node], {
+      const output = cp.spawnSync('npm', ['run', 'install'], {
         cwd: path.resolve(__dirname),
         stdio: ['inherit', 'inherit', 'inherit'],
       });

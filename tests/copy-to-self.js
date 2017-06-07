@@ -1,4 +1,5 @@
 'use strict';
+process.env.FCOPY_NOFALLBACK=1;
 const fcopy = require('..');
 const t = require('tap');
 const fs = require('fs');

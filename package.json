@@ -9,7 +9,7 @@
     "url": "https://github.com/sciolist/fcopy.git"
   },
   "scripts": {
-    "test": "FCOPY_NOFALLBACK=1 tap tests/*.js && rm -rf tests/tmp",
+    "test": "tap tests/*.js && rm -rf tests/tmp",
     "src-publish-github": "node ./scripts/publish-github.js",
     "install": "node ./scripts/install.js"
   },
