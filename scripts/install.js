@@ -4,21 +4,32 @@ const fs = require('fs');
 const binding = require('../lib/bindings.js');
 const cp = require('child_process');
 const packageJson = require('../package.json');
+const args = {
+    rebuild: !!process.env.FCOPY_REBUILD,
+};
+
+for (let i = 2; i < process.argv.length; ++i) {
+    switch (process.argv[i]) {
+        case '--rebuild':
+            args.rebuild = true;
+            break;
+        case '--download':
+            args.download = true;
+            break;
+    }
+}
 
 if (!fs.existsSync(binding.bindingRoot)) {
     fs.mkdirSync(binding.bindingRoot);
 }
 
-if (process.env.FCOPY_REBUILD) {
+if (args.rebuild) {
     rebuildBinding();
-} else if (process.argv.length === 3 && process.argv[2] === '--download') {
-    Promise.all(Object.keys(packageJson.binary.abis).map(v => {
-        return Promise.all(['win32', 'darwin', 'linux'].map(platform => downloadBinding(v, platform)));
-    }))
-        .catch(err => {
-            console.error(err);
-            process.exitCode = 1;
-        });
+} else if (args.download) {
+    downloadAllBindings().catch(err => {
+        console.error(err);
+        process.exitCode = 1;
+    });
 } else if (fs.existsSync(binding.bindingPath)) {
     // do nothing if the required binding exists
 } else {
@@ -31,6 +42,15 @@ if (process.env.FCOPY_REBUILD) {
         console.error(err.message);
         rebuildBinding();
     });
+}
+
+
+function downloadAllBindings() {
+    const platforms = ['win32', 'darwin', 'linux'];
+    const abis = Object.keys(packageJson.binary.abis);
+    return Promise.all(abis.map(abi => (
+        Promise.all(platforms.map(platform => downloadBinding(abi, platform)))
+    )));
 }
 
 function downloadBindings(abis) {
