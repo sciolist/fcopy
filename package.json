@@ -11,6 +11,7 @@
   "scripts": {
     "test": "tap tests/*.js && rm -rf tests/tmp",
     "src-publish-github": "node ./scripts/publish-github.js",
+    "download": "node ./scripts/install.js --download",
     "install": "node ./scripts/install.js"
   },
   "files": [

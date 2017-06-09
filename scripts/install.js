@@ -11,10 +11,18 @@ if (!fs.existsSync(binding.bindingRoot)) {
 
 if (process.env.FCOPY_REBUILD) {
     rebuildBinding();
+} else if (process.argv.length === 3 && process.argv[2] === '--download') {
+    Promise.all(Object.keys(packageJson.binary.abis).map(v => {
+        return Promise.all(['win32', 'darwin', 'linux'].map(platform => downloadBinding(v, platform)));
+    }))
+        .catch(err => {
+            console.error(err);
+            process.exitCode = 1;
+        });
 } else if (fs.existsSync(binding.bindingPath)) {
     // do nothing if the required binding exists
 } else {
-    downloadBinding(binding.versionInfo.abi).then(function download() {
+    downloadBinding(binding.versionInfo.abi, process.platform).then(function download() {
         const otherAbis = Object.keys(packageJson.binary.abis).filter(function(abi) {
             return abi !== binding.versionInfo.abi;
         });
@@ -27,16 +35,14 @@ if (process.env.FCOPY_REBUILD) {
 
 function downloadBindings(abis) {
     return Promise.all(abis.map(function mapAbi(v) {
-        return downloadBinding(v);
+        return downloadBinding(v, process.platform);
     }));
 }
 
-function downloadBinding(abi) {
-    const fileName = binding.buildModuleName(Object.assign({}, binding.versionInfo, {
-        abi,
+function downloadBinding(abi, platform) {
+    return binding.downloadIfNeeded(Object.assign({}, binding.versionInfo, {
+        abi, platform,
     }));
-    console.log('downloading', fileName);
-    return binding.downloadIfNeeded(abi);
 }
 
 function rebuildBinding() {
@@ -47,7 +53,7 @@ function rebuildBinding() {
 
     const output = cp.spawnSync(nodegyp, [
         'rebuild',
-        '--modname=' + binding.moduleName,
+        '--modname=' + binding.buildModuleName(binding.versionInfo),
     ], {
         cwd: path.resolve(__dirname, '..'),
         stdio: ['inherit', 'inherit', 'inherit'],
