@@ -17,7 +17,7 @@ t.test('copying file succeeds', function test(callback) {
     fs.writeFileSync(F1, CONTENTS);
     if (fs.existsSync(F2)) { fs.unlinkSync(F2); }
 
-    return fcopy(F1, F2).then(() => {
+    return fcopy(F1, F2, {mode: 0o666}).then(() => {
         const found = fs.readFileSync(F2).toString();
         t.ok(found, CONTENTS);
     });
