@@ -1,3 +1,12 @@
+```
+***DEPRECATION NOTICE***
+
+This library has been superseded by the new fs.copyFile function in node 8.5.
+
+See documentation here:
+https://nodejs.org/api/fs.html#fs_fs_copyfile_src_dest_flags_callback
+```
+
 fcopy
 ========
 
